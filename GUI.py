@@ -11,14 +11,15 @@ button_width = 5
 button_height = 5
 button_padx = 0
 button_pady = 10
-button_borderwidth = 5
+button_borderwidth = 1
 
 #func
 def EvalExp():
     exp = label.cget('text')
     try:
         exp = exp.replace('^','**')
-        label.config(text=str(float(eval(exp))))
+        formatVal = float("{:.3f}".format(float(eval(exp))))
+        label.config(text=str(formatVal))
     except:
         label.config(text='ERROR')
 
@@ -30,9 +31,19 @@ def clear():
 def AddNumOperator(OpNum):
     exp = label.cget('text')
     print(type(exp), exp)
-    exp.replace('ERROR','')
-    exp = exp+' '+OpNum
-    print('exp after concatinating: ',exp)
+    if 'ERROR' in(exp):
+        exp = ''
+    
+    #exp.replace('ERROR','')
+    print(f'{exp=}')
+    try:
+        if (OpNum.isnumeric() or OpNum=='.') and (exp[-1].isnumeric() or exp[-1]=='.'):
+            exp = exp+''+OpNum
+        elif ~(OpNum.isnumeric()):
+            exp = exp+' '+OpNum
+        print('exp after concatinating: ',exp)
+    except:
+        exp = exp+''+OpNum
     label.config(text=exp)
 
 #Button customizer func
@@ -45,7 +56,7 @@ def createNumberButtons():
     button_list.append(Button(root, width=button_width, text = 0 ))
     button_list[9].grid(row=4, column=1, padx = button_padx, pady = button_pady)
 
-    
+
     button_list[9].config(command = lambda: AddNumOperator('0'))
 
     button_list[0].config(command = lambda: AddNumOperator('1'))
@@ -64,6 +75,10 @@ def createNumberButtons():
 AC = Button(root, width=button_width, text = 'Clear', command = clear)
 AC.grid(row=1, column=4)
 
+#decimal point button
+point = Button(root, width=button_width, text = '.', command=lambda: AddNumOperator('.'))
+point.grid(row=4, column=2, padx=button_padx, pady=button_pady)
+
 #operator buttons
 op_add = Button(root, width=button_width, text='+', command=lambda: AddNumOperator('+'))
 op_subtract = Button(root, width=button_width, text='-', command=lambda: AddNumOperator('-'))
@@ -79,11 +94,11 @@ op_modulus.grid(row=4, column=0, padx=button_padx, pady=button_pady)
 
 #'=' button
 __equal = Button(root, width=button_width, text='=', command=EvalExp)
-__equal.grid(row=4, column=2, padx = button_padx, pady = button_pady)
+__equal.grid(row=2, column=4, padx = button_padx, pady = button_pady)
 
 
 #Creating Display Label
-label = Label(root, text='', width=30, borderwidth=5)
+label = Label(root, text='10', width=30, borderwidth=5)
 label.grid(row=0, column=0, columnspan=4)
 createNumberButtons()
 root.mainloop()

@@ -14,3 +14,5 @@ c= a/b
 d = float("{:.3f}".format(c))
 print(d, type(d))
 '''
+x = 'hi'
+print(x[-1])
