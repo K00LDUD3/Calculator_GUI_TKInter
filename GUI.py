@@ -5,6 +5,10 @@ from types import BuiltinMethodType
 root = Tk()
 root.title('Calculator')
 
+#Frame
+frame = LabelFrame(root, padx=50, pady=50)
+frame.pack(padx=10,pady=10)
+
 button_list = []
 
 #button Param Variables
